@@ -27,6 +27,12 @@ classdef TSPProblem < handle
       obj.loadSpecSection(spec);
     end
 
+    % Puts data into Matlab graph representation
+    function g = getGraph(obj)
+        d = pdist([obj.X', obj.Y']);
+        sqForm = squareform(d);
+        g = graph(sqForm);
+    end
   end
 
   methods (Access = private)
@@ -40,25 +46,25 @@ classdef TSPProblem < handle
         tmp = strsplit(line, ':');
         
         if startsWith("NAME", line, 'IgnoreCase', true)          
-          obj.name = tmp(1);
+          obj.name = tmp(2);
         elseif startsWith("TYPE", line, 'IgnoreCase', true)
-          obj.type = tmp(1);
+          obj.type = tmp(2);
         elseif startsWith("COMMENT", line, 'IgnoreCase', true)
-          obj.comment = tmp(1);
+          obj.comment = tmp(2);
         elseif startsWith("DIMENSION", line, 'IgnoreCase', true)
-          obj.dimension = str2int(tmp(1));
+          obj.dimension = str2int(tmp(2));
         elseif startsWith("CAPACITY", line, 'IgnoreCase', true)
-          obj.capacity = str2int(tmp(1));
+          obj.capacity = str2int(tmp(2));
         elseif startsWith("EDGE_WEIGHT_TYPE", line, 'IgnoreCase', true)
-          obj.edgeWeightType = tmp(1);
+          obj.edgeWeightType = tmp(2);
         elseif startsWith("EDGE_WEIGHT_FORMAT", line, 'IgnoreCase', true)
-          obj.edgeWeightFormat = tmp(1);
+          obj.edgeWeightFormat = tmp(2);
         elseif startsWith("EDGE_DATA_FORMAT", line, 'IgnoreCase', true)
-          obj.edgeDataFormat = tmp(1);
+          obj.edgeDataFormat = tmp(2);
         elseif startsWith("NODE_COORD_TYPE", line, 'IgnoreCase', true)
-          obj.nodeCoordType = tmp(1);
+          obj.nodeCoordType = tmp(2);
         elseif startsWith("DISPLAY_DATA_TYPE", line, 'IgnoreCase', true)
-          obj.displayDataType = tmp(1);
+          obj.displayDataType = tmp(2);
         elseif startsWith("NODE_COORD_SECTION", line, 'IgnoreCase', true)
           obj.parseNodes(spec);
           break;
@@ -71,9 +77,9 @@ classdef TSPProblem < handle
       line = fgetl(spec)
       while line ~= "EOF"
         n = strsplit(line);
-        obj.X = [obj.X, str2double(n(1))];
-        obj.Y = [obj.Y, str2double(n(2))];
-        line = fgetl(spec)
+        obj.X = [obj.X, str2double(n(2))];
+        obj.Y = [obj.Y, str2double(n(3))];
+        line = fgetl(spec);
       end
     end
 
